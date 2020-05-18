@@ -51,7 +51,7 @@ class ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      scope.joins(:workspaces).where(workspaces: { id: user.workspaces })
     end
   end
 end
