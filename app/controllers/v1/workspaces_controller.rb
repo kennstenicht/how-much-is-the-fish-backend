@@ -4,6 +4,7 @@ module V1
   # Controller for venues
   class WorkspacesController < ApplicationController
     before_action :set_workspace, only: %i[show update destroy]
+    before_action :deserialize_params, only: %i[create update]
 
     # GET /workspaces
     def index
@@ -30,7 +31,7 @@ module V1
 
     # POST /workspaces
     def create
-      @workspace = Workspace.new(jsonapi_deserialize(params))
+      @workspace = Workspace.new(@params_deserialized)
 
       authorize @workspace
 
@@ -45,7 +46,7 @@ module V1
     def update
       authorize @workspace
 
-      if @workspace.update(jsonapi_deserialize(params))
+      if @workspace.update(@params_deserialized)
         render jsonapi: @workspace
       else
         render jsonapi: @workspace.errors, status: :unprocessable_entity
@@ -65,6 +66,12 @@ module V1
       id = params[:workspace_id] || params[:id]
 
       @workspace = Workspace.find(id)
+    end
+
+    def deserialize_params
+      params_only = %i[artists events name users venues]
+
+      @params_deserialized = jsonapi_deserialize(params, only: params_only)
     end
   end
 end

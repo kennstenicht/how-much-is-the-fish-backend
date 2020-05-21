@@ -4,6 +4,7 @@ module V1
   # Controller for venues
   class VenuesController < ApplicationController
     before_action :set_venue, only: %i[show update destroy]
+    before_action :deserialize_params, only: %i[create update]
 
     # GET /venues
     def index
@@ -30,7 +31,7 @@ module V1
 
     # POST /venues
     def create
-      @venue = Venue.new(jsonapi_deserialize(params))
+      @venue = Venue.new(@params_deserialized)
 
       authorize @venue
 
@@ -45,7 +46,7 @@ module V1
     def update
       authorize @venue
 
-      if @venue.update(jsonapi_deserialize(params))
+      if @venue.update(@params_deserialized)
         render jsonapi: @venue
       else
         render jsonapi: @venue.errors, status: :unprocessable_entity
@@ -65,6 +66,12 @@ module V1
       id = params[:venue_id] || params[:id]
 
       @venue = Venue.find(id)
+    end
+
+    def deserialize_params
+      params_only = %i[events name workspaces]
+
+      @params_deserialized = jsonapi_deserialize(params, only: params_only)
     end
   end
 end

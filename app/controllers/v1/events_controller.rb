@@ -4,6 +4,7 @@ module V1
   # Controller for events
   class EventsController < ApplicationController
     before_action :set_event, only: %i[show update destroy]
+    before_action :deserialize_params, only: %i[create update]
 
     # GET /events
     def index
@@ -30,7 +31,7 @@ module V1
 
     # POST /events
     def create
-      @event = Event.new(jsonapi_deserialize(params))
+      @event = Event.new(@params_deserialized)
 
       authorize @event
 
@@ -45,7 +46,7 @@ module V1
     def update
       authorize @event
 
-      if @event.update(jsonapi_deserialize(params))
+      if @event.update(@params_deserialized)
         render jsonapi: @event
       else
         render jsonapi: @event.errors, status: :unprocessable_entity
@@ -65,6 +66,12 @@ module V1
       id = params[:event_id] || params[:id]
 
       @event = Event.find(id)
+    end
+
+    def deserialize_params
+      params_only = %i[artists date guests name workspaces]
+
+      @params_deserialized = jsonapi_deserialize(params, only: params_only)
     end
   end
 end

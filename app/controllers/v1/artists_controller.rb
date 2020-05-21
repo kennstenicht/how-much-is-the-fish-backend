@@ -4,6 +4,7 @@ module V1
   # Controller for artists
   class ArtistsController < ApplicationController
     before_action :set_artist, only: %i[show update destroy events]
+    before_action :deserialize_params, only: %i[create update]
 
     # GET /artists
     def index
@@ -30,7 +31,7 @@ module V1
 
     # POST /artists
     def create
-      @artist = Artist.new(jsonapi_deserialize(params))
+      @artist = Artist.new(@params_deserialized)
 
       authorize @artist
 
@@ -45,7 +46,7 @@ module V1
     def update
       authorize @artist
 
-      if @artist.update(jsonapi_deserialize(params))
+      if @artist.update(@params_deserialized)
         render jsonapi: @artist
       else
         render jsonapi: @artist.errors, status: :unprocessable_entity
@@ -65,6 +66,12 @@ module V1
       id = params[:artist_id] || params[:id]
 
       @artist = Artist.find(id)
+    end
+
+    def deserialize_params
+      params_only = %i[events name]
+
+      @params_deserialized = jsonapi_deserialize(params, only: params_only)
     end
   end
 end

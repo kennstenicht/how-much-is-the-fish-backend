@@ -4,6 +4,7 @@ module V1
   # Controller for users
   class UsersController < ApplicationController
     before_action :set_user, only: %i[show update destroy]
+    before_action :deserialize_params, only: %i[create update]
 
     # GET /users
     def index
@@ -30,7 +31,7 @@ module V1
 
     # POST /users
     def create
-      @user = User.new(jsonapi_deserialize(params))
+      @user = User.new(@params_deserialized)
 
       authorize @user
 
@@ -45,7 +46,7 @@ module V1
     def update
       authorize @user
 
-      if @user.update(jsonapi_deserialize(params))
+      if @user.update(@params_deserialized)
         render jsonapi: @user
       else
         render jsonapi: @user.errors, status: :unprocessable_entity
@@ -65,6 +66,12 @@ module V1
       id = params[:user_id] || params[:id]
 
       @user = User.find(id)
+    end
+
+    def deserialize_params
+      params_only = %i[email firstname lastname workspaces]
+
+      @params_deserialized = jsonapi_deserialize(params, only: params_only)
     end
   end
 end
