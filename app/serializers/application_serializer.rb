@@ -10,4 +10,7 @@ class ApplicationSerializer
 
   # Global meta fields
   attributes :created_at, :updated_at
+
+  # Global self link
+  link :self, :url
 end

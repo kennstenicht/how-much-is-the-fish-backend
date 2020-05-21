@@ -10,6 +10,4 @@ class ArtistSerializer < ApplicationSerializer
       url_helpers.v1_artist_events_url(object.id)
     end
   }
-
-  link :self, :url
 end

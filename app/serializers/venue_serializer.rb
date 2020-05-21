@@ -17,6 +17,4 @@ class VenueSerializer < ApplicationSerializer
       url_helpers.v1_venue_workspaces_url(object.id)
     end
   }
-
-  link :self, :url
 end

@@ -4,17 +4,17 @@
 class WorkspaceSerializer < ApplicationSerializer
   attributes :name
 
+  has_many :artists, lazy_load_data: true, links: {
+    self: :url,
+    related: lambda do |object|
+      url_helpers.v1_workspace_artists_url(object.id)
+    end
+  }
+
   belongs_to :events, lazy_load_data: true, links: {
     self: :url,
     related: lambda do |object|
       url_helpers.v1_workspace_events_url(object.id)
-    end
-  }
-
-  has_many :venues, lazy_load_data: true, links: {
-    self: :url,
-    related: lambda do |object|
-      url_helpers.v1_workspace_venues_url(object.id)
     end
   }
 
@@ -25,12 +25,10 @@ class WorkspaceSerializer < ApplicationSerializer
     end
   }
 
-  has_many :artists, lazy_load_data: true, links: {
+  has_many :venues, lazy_load_data: true, links: {
     self: :url,
     related: lambda do |object|
-      url_helpers.v1_workspace_artists_url(object.id)
+      url_helpers.v1_workspace_venues_url(object.id)
     end
   }
-
-  link :self, :url
 end

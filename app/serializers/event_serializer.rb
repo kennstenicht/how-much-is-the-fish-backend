@@ -17,6 +17,4 @@ class EventSerializer < ApplicationSerializer
       url_helpers.v1_event_workspaces_url(object.id)
     end
   }
-
-  link :self, :url
 end

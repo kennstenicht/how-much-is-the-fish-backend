@@ -10,6 +10,4 @@ class UserSerializer < ApplicationSerializer
       url_helpers.v1_user_workspaces_url(object.id)
     end
   }
-
-  link :self, :url
 end
