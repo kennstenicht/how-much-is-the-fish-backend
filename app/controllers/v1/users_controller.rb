@@ -36,9 +36,9 @@ module V1
       authorize @user
 
       if @user.save
-        render jsonapi: @user, status: :created, location: @user
+        render jsonapi: @user, status: :created, location: v1_user_url(@user)
       else
-        render jsonapi: @user.errors, status: :unprocessable_entity
+        render jsonapi_errors: @user.errors, status: :unprocessable_entity
       end
     end
 
@@ -49,7 +49,7 @@ module V1
       if @user.update(@params_deserialized)
         render jsonapi: @user
       else
-        render jsonapi: @user.errors, status: :unprocessable_entity
+        render jsonapi_errors: @user.errors, status: :unprocessable_entity
       end
     end
 

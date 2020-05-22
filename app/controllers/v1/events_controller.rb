@@ -38,7 +38,7 @@ module V1
       if @event.save
         render jsonapi: @event, status: :created, location: v1_event_url(@event)
       else
-        render jsonapi: @event.errors, status: :unprocessable_entity
+        render jsonapi_errors: @event.errors, status: :unprocessable_entity
       end
     end
 
@@ -49,7 +49,7 @@ module V1
       if @event.update(@params_deserialized)
         render jsonapi: @event
       else
-        render jsonapi: @event.errors, status: :unprocessable_entity
+        render jsonapi_errors: @event.errors, status: :unprocessable_entity
       end
     end
 

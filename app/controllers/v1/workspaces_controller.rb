@@ -38,7 +38,7 @@ module V1
       if @workspace.save
         render jsonapi: @workspace, status: :created, location: @workspace
       else
-        render jsonapi: @workspace.errors, status: :unprocessable_entity
+        render jsonapi_errors: @workspace.errors, status: :unprocessable_entity
       end
     end
 
@@ -49,7 +49,7 @@ module V1
       if @workspace.update(@params_deserialized)
         render jsonapi: @workspace
       else
-        render jsonapi: @workspace.errors, status: :unprocessable_entity
+        render jsonapi_errors: @workspace.errors, status: :unprocessable_entity
       end
     end
 

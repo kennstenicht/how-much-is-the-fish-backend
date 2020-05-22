@@ -38,7 +38,7 @@ module V1
       if @artist.save
         render jsonapi: @artist, status: :created, location: @artist
       else
-        render jsonapi: @artist.errors, status: :unprocessable_entity
+        render jsonapi_errors: @artist.errors, status: :unprocessable_entity
       end
     end
 
@@ -49,7 +49,7 @@ module V1
       if @artist.update(@params_deserialized)
         render jsonapi: @artist
       else
-        render jsonapi: @artist.errors, status: :unprocessable_entity
+        render jsonapi_errors: @artist.errors, status: :unprocessable_entity
       end
     end
 

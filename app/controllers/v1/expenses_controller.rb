@@ -24,7 +24,7 @@ module V1
       if @expense.save
         render jsonapi: @expense, status: :created, location: @expense
       else
-        render jsonapi: @expense.errors, status: :unprocessable_entity
+        render jsonapi_errors: @expense.errors, status: :unprocessable_entity
       end
     end
 
@@ -33,7 +33,7 @@ module V1
       if @expense.update(expense_params)
         render jsonapi: @expense
       else
-        render jsonapi: @expense.errors, status: :unprocessable_entity
+        render jsonapi_errors: @expense.errors, status: :unprocessable_entity
       end
     end
 

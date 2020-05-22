@@ -38,7 +38,7 @@ module V1
       if @venue.save
         render jsonapi: @venue, status: :created, location: @venue
       else
-        render jsonapi: @venue.errors, status: :unprocessable_entity
+        render jsonapi_errors: @venue.errors, status: :unprocessable_entity
       end
     end
 
@@ -49,7 +49,7 @@ module V1
       if @venue.update(@params_deserialized)
         render jsonapi: @venue
       else
-        render jsonapi: @venue.errors, status: :unprocessable_entity
+        render jsonapi_errors: @venue.errors, status: :unprocessable_entity
       end
     end
 

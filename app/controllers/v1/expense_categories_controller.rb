@@ -10,7 +10,7 @@ module V1
       @expense_categories = ExpenseCategory.all
 
       authorize @artists
-      
+
       render jsonapi: @expense_categories
     end
 
@@ -24,9 +24,12 @@ module V1
       @expense_category = ExpenseCategory.new(expense_category_params)
 
       if @expense_category.save
-        render jsonapi: @expense_category, status: :created, location: @expense_category
+        render jsonapi: @expense_category,
+               status: :created,
+               location: @expense_category
       else
-        render jsonapi: @expense_category.errors, status: :unprocessable_entity
+        render jsonapi_errors: @expense_category.errors,
+               status: :unprocessable_entity
       end
     end
 
@@ -35,7 +38,8 @@ module V1
       if @expense_category.update(expense_category_params)
         render jsonapi: @expense_category
       else
-        render jsonapi: @expense_category.errors, status: :unprocessable_entity
+        render jsonapi_errors: @expense_category.errors,
+               status: :unprocessable_entity
       end
     end
 
